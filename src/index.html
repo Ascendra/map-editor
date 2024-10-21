@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Map Editor</title>
+        <link rel="stylesheet" href="index.css" />
+        <script type="module" src="index.js"></script>
+    </head>
+    <body>
+        <div id="top" class="panel-container">
+            <generic-inputs-panel></generic-inputs-panel>
+        </div>
+        <div id="left" class="panel-container">
+            <platforms-collection-panel></platforms-collection-panel>
+            <serialized-map-panel></serialized-map-panel>
+        </div>
+        <div id="center" class="panel-container">
+            <map-viewer-panel></map-viewer-panel>
+        </div>
+        <div id="right" class="panel-container">
+            <entities-collection-panel></entities-collection-panel>
+            <details-panel></details-panel>
+        </div>
+
+        <template id="map-viewer-panel">
+            <cavas key="canvas"></cavas>
+        </template>
+    </body>
+</html>
