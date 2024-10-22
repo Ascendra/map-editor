@@ -5,8 +5,6 @@ export class ListItem extends Joyst {
 
     static inputs = ["label", "item-id"];
 
-    private itemId!: string;
-
     onInitialize(): void {
         this.addEvent(
             "click",
@@ -16,19 +14,17 @@ export class ListItem extends Joyst {
     }
 
     onChange(type: string, newValue: string) {
-        switch (type) {
-            case "label":
-                this.getChild("label").textContent = newValue;
-                break;
-            case "item-id":
-                this.itemId = newValue;
-                break;
+        if (type === "label") {
+            this.getChild("label").textContent = newValue;
         }
     }
 
     private dispatchDeleteEvent = () => {
         this.dispatchEvent(
-            new CustomEvent("delete", { detail: this.itemId, bubbles: true })
+            new CustomEvent("delete", {
+                detail: this.getAttribute("item-id"),
+                bubbles: true
+            })
         );
     };
 }

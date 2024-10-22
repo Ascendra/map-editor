@@ -28,7 +28,11 @@ export class EntitiesService {
         return newEntitySubject;
     }
 
-    public static remove(subject: Subject<Entity>): void {
+    public static remove(subject?: Subject<Entity>): void {
+        if (!subject) {
+            return;
+        }
+
         this.entities.set(
             this.entities.get().filter((entitySubject) =>
                 entitySubject !== subject

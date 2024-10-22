@@ -32,7 +32,11 @@ export class PlatformsService {
         return newPlatformSubject;
     }
 
-    public static remove(subject: Subject<Platform>): void {
+    public static remove(subject?: Subject<Platform>): void {
+        if (!subject) {
+            return;
+        }
+
         this.platforms.set(
             this.platforms.get().filter((platformSubject) =>
                 platformSubject !== subject

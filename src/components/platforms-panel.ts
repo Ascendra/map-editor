@@ -6,6 +6,7 @@ export class PlatformsPanel extends Joyst {
 
     onInitialize(): void {
         this.addSubject(PlatformsService.platforms);
+
         this.addEvent("delete", this.removeListItem);
         this.addEvent(
             "click",
@@ -44,10 +45,6 @@ export class PlatformsPanel extends Joyst {
         const idToRemove = event.detail;
 
         const itemToRemove = Subject.for(idToRemove);
-
-        if (!itemToRemove) {
-            return;
-        }
 
         PlatformsService.remove(itemToRemove);
     }
