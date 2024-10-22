@@ -3,7 +3,7 @@ import { Joyst } from "joyst";
 export class ListItem extends Joyst {
     static template = "list-item";
 
-    static inputs = ["label", "item-id"];
+    static props = ["label", "item-id"];
 
     onInitialize(): void {
         this.addEvent(

@@ -1,13 +1,18 @@
-import { Joyst, Subject } from "joyst";
-import { PlatformsService } from "../services/platforms-service";
+import { Collection, CollectionChangeDetail, Joyst, Subject } from "joyst";
+import { Platform, PlatformsService } from "../services/platforms-service";
 
 export class PlatformsPanel extends Joyst {
     static template = "platforms-panel";
 
     onInitialize(): void {
-        this.addSubject(PlatformsService.platforms);
+        this.addCollection(PlatformsService.platforms);
 
-        this.addEvent("delete", this.removeListItem);
+        this.addEvent(
+            "delete",
+            this.removePlatform,
+            this.getChild("list-items")
+        );
+
         this.addEvent(
             "click",
             this.addNewPlatform,
@@ -15,37 +20,50 @@ export class PlatformsPanel extends Joyst {
         );
     }
 
-    onChange(): void {
-        this.drawListItems();
+    onChange(
+        _: Collection,
+        changeDetails: CollectionChangeDetail
+    ): void {
+        switch (changeDetails.type) {
+            case Collection.Add:
+                this.addListItem(changeDetails.value);
+                break;
+            case Collection.Set:
+                this.setListItems();
+                break;
+            case Collection.Remove:
+                this.removeListItem(changeDetails.value);
+                break;
+        }
+    }
+
+    private addListItem(platformSubject: Subject<Platform>): void {
+        const { id } = platformSubject.get();
+
+        const newListItem = document.createElement("list-item");
+        newListItem.setAttribute("label", `${id}`);
+        newListItem.setAttribute("item-id", `${platformSubject.name}`);
+
+        this.getChild("list-items").appendChild(newListItem);
+    }
+
+    private setListItems(): void {
+        this.getChild("list-items").replaceChildren();
+
+        PlatformsService.platforms.get().forEach((platform) => {
+            this.addListItem(platform);
+        });
+    }
+
+    private removeListItem(listItemIndex: number): void {
+        this.getChild("list-items").children[listItemIndex].remove();
     }
 
     private addNewPlatform() {
         PlatformsService.add();
     }
 
-    private drawListItems(): void {
-        const platforms = PlatformsService.platforms.get();
-
-        const listItemsContainer = this.getChild("list-items");
-
-        listItemsContainer.replaceChildren();
-
-        platforms.forEach((platform) => {
-            const { id } = platform.get();
-
-            const newListItem = document.createElement("list-item");
-            newListItem.setAttribute("label", `${id}`);
-            newListItem.setAttribute("item-id", `${platform.name}`);
-
-            listItemsContainer.appendChild(newListItem);
-        });
-    }
-
-    private removeListItem(event: CustomEvent<string>) {
-        const idToRemove = event.detail;
-
-        const itemToRemove = Subject.for(idToRemove);
-
-        PlatformsService.remove(itemToRemove);
+    private removePlatform(event: CustomEvent<string>) {
+        PlatformsService.remove(event.detail);
     }
 }

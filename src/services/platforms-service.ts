@@ -1,4 +1,4 @@
-import { Subject } from "joyst";
+import { Collection, Subject } from "joyst";
 
 export type Platform = {
     x: number;
@@ -9,11 +9,11 @@ export type Platform = {
 };
 
 export class PlatformsService {
-    public static platforms = new Subject<Subject<Platform>[]>([]);
+    public static platforms = new Collection<Subject<Platform>>();
 
     private static nextId = 0;
 
-    public static add(): Subject<Platform> {
+    public static add(): void {
         const newId = this.nextId++;
 
         const newPlatformSubject = new Subject({
@@ -24,23 +24,16 @@ export class PlatformsService {
             id: newId
         }, `platform-${newId}`);
 
-        this.platforms.set([
-            ...this.platforms.get(),
-            newPlatformSubject
-        ]);
-
-        return newPlatformSubject;
+        this.platforms.add(newPlatformSubject);
     }
 
-    public static remove(subject?: Subject<Platform>): void {
-        if (!subject) {
+    public static remove(platformName: string): void {
+        const platformSubject = Subject.for(platformName);
+
+        if (!platformSubject) {
             return;
         }
 
-        this.platforms.set(
-            this.platforms.get().filter((platformSubject) =>
-                platformSubject !== subject
-            )
-        );
+        this.platforms.remove(platformSubject);
     }
 }

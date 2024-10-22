@@ -8,7 +8,7 @@
         "prepare": "husky"
     },
     "dependencies": {
-        "joyst": "0.2.3"
+        "joyst": "0.3.1"
     },
     "devDependencies": {
         "@parcel/packager-ts": "2.12.0",
