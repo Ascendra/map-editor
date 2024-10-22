@@ -1,6 +1,7 @@
 import { Collection, Joyst, Subject } from "joyst";
 import { MapService } from "../services/map-service";
 import { PlatformsService } from "../services/platforms-service";
+import { UtilityService } from "../services/utility-service";
 
 export class MapViewerPanel extends Joyst {
     static template = "map-viewer-panel";
@@ -11,9 +12,10 @@ export class MapViewerPanel extends Joyst {
         const canvas = this.getChild<HTMLCanvasElement>("canvas");
         const context = canvas.getContext("2d");
 
-        if (context === null) {
-            throw new Error("Could not get 2d context for map viewer canvas");
-        }
+        UtilityService.assert(
+            context !== null,
+            "Could not get 2d context for map viewer canvas"
+        );
 
         this.context = context;
 

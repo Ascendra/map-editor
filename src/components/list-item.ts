@@ -1,6 +1,7 @@
 import { Joyst, Subject } from "joyst";
 import { MapService } from "../services/map-service";
 import { PlatformsService } from "../services/platforms-service";
+import { UtilityService } from "../services/utility-service";
 
 export type Item = {
     label: string;
@@ -12,7 +13,7 @@ export class ListItem extends Joyst {
 
     static props = ["item"];
 
-    private itemSubject!: Subject<Item>;
+    private itemSubject?: Subject<Item>;
 
     onInitialize(): void {
         this.addEvent(
@@ -53,17 +54,21 @@ export class ListItem extends Joyst {
 
         const newItemSubject = Subject.for(newSubjectName);
 
-        if (newItemSubject === undefined) {
-            throw new Error(
-                `Recieved invalid subject name: ${newSubjectName} for list-item`
-            );
-        }
+        UtilityService.assert(
+            newItemSubject !== undefined,
+            `Received invalid subject name: ${newSubjectName} for list-item`
+        );
 
         this.itemSubject = newItemSubject;
         this.addSubject(this.itemSubject);
     }
 
     private updateLabel(): void {
+        UtilityService.assert(
+            this.itemSubject !== undefined,
+            "Invalid itemSubject"
+        );
+
         this.getChild("label").textContent = this.itemSubject.get().label;
     }
 
