@@ -30,13 +30,7 @@ export class PlatformsService {
         this.platforms.add(newPlatformSubject);
     }
 
-    public static remove(platformName: string): void {
-        const platformSubject = Subject.for(platformName);
-
-        if (!platformSubject) {
-            return;
-        }
-
+    public static remove(platformSubject: Subject<Platform>): void {
         this.platforms.remove(platformSubject);
     }
 }

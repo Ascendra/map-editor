@@ -10,13 +10,13 @@ export class PlatformsPanel extends Joyst {
 
         this.addEvent(
             "delete",
-            this.removePlatform,
+            this.deletePlatform,
             this.getChild("list-items")
         );
 
         this.addEvent(
             "click",
-            this.addNewPlatform,
+            this.addPlatform,
             this.getChild("add-button")
         );
 
@@ -63,11 +63,11 @@ export class PlatformsPanel extends Joyst {
         this.getChild("list-items").children[listItemIndex].remove();
     }
 
-    private addNewPlatform() {
+    private addPlatform() {
         PlatformsService.add();
     }
 
-    private removePlatform(event: CustomEvent<string>) {
+    private deletePlatform(event: CustomEvent<Subject<Platform>>) {
         PlatformsService.remove(event.detail);
     }
 

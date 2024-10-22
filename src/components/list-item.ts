@@ -78,7 +78,7 @@ export class ListItem extends Joyst {
     private dispatchDeleteEvent = () => {
         this.dispatchEvent(
             new CustomEvent("delete", {
-                detail: this.getAttribute("item"),
+                detail: this.itemSubject,
                 bubbles: true
             })
         );
