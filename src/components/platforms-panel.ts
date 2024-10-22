@@ -1,4 +1,5 @@
 import { Collection, CollectionChangeDetail, Joyst, Subject } from "joyst";
+import { MapService } from "../services/map-service";
 import { Platform, PlatformsService } from "../services/platforms-service";
 
 export class PlatformsPanel extends Joyst {
@@ -17,6 +18,12 @@ export class PlatformsPanel extends Joyst {
             "click",
             this.addNewPlatform,
             this.getChild("add-button")
+        );
+
+        this.addEvent(
+            "active",
+            this.setActiveItem,
+            this.getChild("list-items")
         );
     }
 
@@ -38,11 +45,8 @@ export class PlatformsPanel extends Joyst {
     }
 
     private addListItem(platformSubject: Subject<Platform>): void {
-        const { id } = platformSubject.get();
-
         const newListItem = document.createElement("list-item");
-        newListItem.setAttribute("label", `${id}`);
-        newListItem.setAttribute("item-id", `${platformSubject.name}`);
+        newListItem.setAttribute("item", `${platformSubject.name}`);
 
         this.getChild("list-items").appendChild(newListItem);
     }
@@ -65,5 +69,9 @@ export class PlatformsPanel extends Joyst {
 
     private removePlatform(event: CustomEvent<string>) {
         PlatformsService.remove(event.detail);
+    }
+
+    private setActiveItem(event: CustomEvent<Subject>) {
+        MapService.activeItem.set(event.detail);
     }
 }
