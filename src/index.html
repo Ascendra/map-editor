@@ -5,27 +5,39 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Map Editor</title>
-        <link rel="stylesheet" href="index.css" />
-        <script type="module" src="index.js"></script>
+        <link rel="stylesheet" href="styles/index.css" />
     </head>
     <body>
-        <div id="top" class="panel-container">
+        <div id="top" class="panel-container horizontal">
             <generic-inputs-panel></generic-inputs-panel>
         </div>
-        <div id="left" class="panel-container">
-            <platforms-collection-panel></platforms-collection-panel>
+        <div id="left" class="panel-container vertical">
+            <platforms-panel></platforms-panel>
             <serialized-map-panel></serialized-map-panel>
         </div>
-        <div id="center" class="panel-container">
+        <div id="center" class="panel-container vertical">
             <map-viewer-panel></map-viewer-panel>
         </div>
-        <div id="right" class="panel-container">
-            <entities-collection-panel></entities-collection-panel>
+        <div id="right" class="panel-container vertical">
+            <entities-panel></entities-panel>
             <details-panel></details-panel>
         </div>
 
         <template id="map-viewer-panel">
             <cavas key="canvas"></cavas>
         </template>
+
+        <template id="list-item">
+            <span key="label" class="label"></span>
+            <button key="delete-button" class="delete-button">x</button>
+        </template>
+
+        <template id="platforms-panel">
+            <h2>Platforms</h2>
+            <button type="button" key="add-button">Add</button>
+            <div key="list-items" class="list-items"></div>
+        </template>
+
+        <script type="module" src="index.ts"></script>
     </body>
 </html>

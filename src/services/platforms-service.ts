@@ -8,10 +8,8 @@ export type Platform = {
     id: number;
 };
 
-export class PlatformsManager {
-    public static platforms: Subject<Platform>[] = [];
-
-    public static platformIds = new Subject<number[]>([]);
+export class PlatformsService {
+    public static platforms = new Subject<Subject<Platform>[]>([]);
 
     private static nextId = 0;
 
@@ -24,25 +22,21 @@ export class PlatformsManager {
             length: 1,
             spawnPointsCount: 0,
             id: newId
-        });
+        }, `platform-${newId}`);
 
-        this.platforms.push(newPlatformSubject);
-
-        this.platformIds.set([
-            ...this.platformIds.get(),
-            newId
+        this.platforms.set([
+            ...this.platforms.get(),
+            newPlatformSubject
         ]);
 
         return newPlatformSubject;
     }
 
     public static remove(subject: Subject<Platform>): void {
-        this.platforms = this.platforms.filter((platformSubject) =>
-            platformSubject !== subject
-        );
-
-        this.platformIds.set(
-            this.platformIds.get().filter(id => id !== subject.get().id)
+        this.platforms.set(
+            this.platforms.get().filter((platformSubject) =>
+                platformSubject !== subject
+            )
         );
     }
 }
