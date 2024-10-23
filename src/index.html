@@ -8,36 +8,8 @@
         <link rel="stylesheet" href="styles/index.css" />
     </head>
     <body>
-        <div id="top" class="panel-container horizontal">
-            <generic-inputs-panel></generic-inputs-panel>
-        </div>
-        <div id="left" class="panel-container vertical">
-            <platforms-panel></platforms-panel>
-            <serialized-map-panel></serialized-map-panel>
-        </div>
-        <div id="center" class="panel-container vertical">
-            <map-viewer-panel></map-viewer-panel>
-        </div>
-        <div id="right" class="panel-container vertical">
-            <entities-panel></entities-panel>
-            <details-panel></details-panel>
-        </div>
+        <div id="root"></div>
 
-        <template id="map-viewer-panel">
-            <canvas key="canvas"></canvas>
-        </template>
-
-        <template id="list-item">
-            <span key="label" class="label"></span>
-            <button key="delete-button" class="delete-button">x</button>
-        </template>
-
-        <template id="platforms-panel">
-            <h2>Platforms</h2>
-            <button type="button" key="add-button">Add</button>
-            <div key="list-items" class="list-items"></div>
-        </template>
-
-        <script type="module" src="index.ts"></script>
+        <script type="module" src="index.tsx"></script>
     </body>
 </html>
