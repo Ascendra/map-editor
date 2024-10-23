@@ -3,7 +3,7 @@ body {
     margin: 0;
     display: grid;
     grid-template-rows: 100px minmax(0, 1fr);
-    grid-template-columns: 300px 1fr 300px;
+    grid-template-columns: 300px minmax(0, 1fr) 300px;
     grid-template-areas: 
         "top top top"
         "left center right";
@@ -45,6 +45,7 @@ list-item {
     width: 100%;
     padding: 0.5rem;
     border: solid 1px #000000;
+    cursor: pointer;
 }
 
 list-item .label {
@@ -53,6 +54,10 @@ list-item .label {
 
 list-item .delete-button {
     flex-basis: 0 0 auto;
+}
+
+list-item.active {
+    border-color: #FF0000;
 }
 
 
@@ -70,4 +75,13 @@ platforms-panel .list-items {
     gap: 0.5rem;
     flex-grow: 1;
     overflow: auto;
+}
+
+map-viewer-panel {
+    padding: 1rem;
+    overflow: auto;
+}
+
+map-viewer-panel canvas {
+    border: solid 1px #000000;
 }
