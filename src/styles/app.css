@@ -1,7 +1,6 @@
-
-body {
-    margin: 0;
+#root {
     display: grid;
+    height: 100%;
     grid-template-rows: 100px minmax(0, 1fr);
     grid-template-columns: 300px minmax(0, 1fr) 300px;
     grid-template-areas: 
@@ -40,7 +39,8 @@ body {
     flex-direction: row;
 }
 
-list-item {
+
+.list-item {
     display: flex;
     width: 100%;
     padding: 0.5rem;
@@ -48,20 +48,20 @@ list-item {
     cursor: pointer;
 }
 
-list-item .label {
-    flex-grow: 1;
-}
-
-list-item .delete-button {
-    flex-basis: 0 0 auto;
-}
-
-list-item.active {
+.list-item.active {
     border-color: #FF0000;
 }
 
+.list-item .label {
+    flex-grow: 1;
+}
 
-platforms-panel {
+.list-item .delete-button {
+    flex-basis: 0 0 auto;
+}
+
+
+.platforms-panel {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -69,7 +69,7 @@ platforms-panel {
     min-height: 0;
 }
 
-platforms-panel .list-items {
+.platforms-panel .list-items {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -77,11 +77,34 @@ platforms-panel .list-items {
     overflow: auto;
 }
 
-map-viewer-panel {
+
+.map-view-panel {
     padding: 1rem;
+    height: 100%;
+}
+
+.map-view-panel canvas {
+    border: solid 1px #000000;
+}
+
+
+.mouse-position-overlay {
+    display: block;
+    height: 100%;
+    position: relative;
+}
+
+.mouse-position-overlay .wrapper {
+    height: 100%;
+    width: 100%;
     overflow: auto;
 }
 
-map-viewer-panel canvas {
-    border: solid 1px #000000;
+.mouse-position-overlay::after {
+    content: attr(data-mouse-x) ", " attr(data-mouse-y);
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    color: #777777;
+    pointer-events: none;
 }
