@@ -1,13 +1,14 @@
 import { FunctionComponent, useRef } from "react";
 import { useMapEditorMousePositionRecorder } from "../hooks/useMapEditorMousePositionRecorder";
 import { useMapEditorContext } from "../MapEditorContext";
+import { Nullable } from "../models/Nullable";
 import { Canvas } from "./Canvas/Canvas";
 import { MousePositionOverlay } from "./MousePositionOverlay";
 import { PlatformCanvasItem } from "./PlatformCanvasItem";
 
 export const MapViewPanel: FunctionComponent = () => {
     const { height, width, platforms } = useMapEditorContext();
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const canvasRef = useRef<Nullable<HTMLCanvasElement>>(null);
 
     useMapEditorMousePositionRecorder(canvasRef, [width, height]);
 

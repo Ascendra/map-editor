@@ -7,6 +7,7 @@ import {
     useState
 } from "react";
 import { CanvasContext2d } from "../../hooks/useContext2d";
+import { Nullable } from "../../models/Nullable";
 
 type CanvasProps = {
     height: number;
@@ -21,10 +22,12 @@ export const Canvas = forwardRef<
     { height, width, children },
     ref
 ) => {
-    const [context2d, setContext2d] = useState<CanvasRenderingContext2D | null>(
+    const [context2d, setContext2d] = useState<
+        Nullable<CanvasRenderingContext2D>
+    >(
         null
     );
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const canvasRef = useRef<Nullable<HTMLCanvasElement>>(null);
 
     useImperativeHandle(ref, () => canvasRef.current!);
 

@@ -1,6 +1,9 @@
 import { createContext, useContext } from "react";
+import { Nullable } from "../models/Nullable";
 
-export const CanvasContext2d = createContext<CanvasRenderingContext2D | null>(
+export const CanvasContext2d = createContext<
+    Nullable<CanvasRenderingContext2D>
+>(
     null
 );
 

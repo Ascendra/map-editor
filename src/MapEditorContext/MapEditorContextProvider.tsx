@@ -6,6 +6,7 @@ import {
     useReducer
 } from "react";
 import { ActiveItem } from "../models/ActiveItem";
+import { Nullable } from "../models/Nullable";
 import { Platform } from "../models/Platform";
 import { Vector2 } from "../models/Vector2";
 import { MapEditorContextActions } from "./MapEditorContextActions";
@@ -30,12 +31,12 @@ const initialMapEditorContext: MapEditorContextState = {
     platforms: []
 };
 
-export const MapEditorContext = createContext<MapEditorContextState | null>(
+export const MapEditorContext = createContext<Nullable<MapEditorContextState>>(
     null
 );
 
 export const MapEdtiorContextDispatch = createContext<
-    Dispatch<MapEditorContextActions> | null
+    Nullable<Dispatch<MapEditorContextActions>>
 >(null);
 
 type MapEditorContextProviderProps = {
