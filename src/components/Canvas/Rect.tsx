@@ -1,23 +1,23 @@
 import { FunctionComponent } from "react";
 import { useContext2d } from "../../hooks/useContext2d";
-import { Vector2 } from "../../models/Vector2";
 
-type LineProps = {
-    start: Vector2;
-    end: Vector2;
+type RectProps = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
     lineDash?: number[];
     color?: string;
 };
 
-export const Line: FunctionComponent<LineProps> = (
-    { start, end, lineDash, color }
+export const Rect: FunctionComponent<RectProps> = (
+    { x, y, width, height, lineDash, color }
 ) => {
     const context = useContext2d();
 
     if (context !== null) {
         context.beginPath();
-        context.moveTo(start[0], start[1]);
-        context.lineTo(end[0], end[1]);
+        context.rect(x, y, width, height);
         context.strokeStyle = color || "#000000";
         context.setLineDash(lineDash || []);
         context.stroke();

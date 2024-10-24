@@ -8,12 +8,14 @@ import {
 } from "./MapEditorContextActions";
 import { MapEditorContextState } from "./MapEditorContextProvider";
 
+// we'll need to remove this eventually and make this reducer a pure function
 let globalId = 0;
 
 export const mapEditorContextReducer = (
     state: MapEditorContextState,
     action: MapEditorContextActions
 ): MapEditorContextState => {
+    console.log(action.type);
     switch (action.type) {
         case SetActiveItem:
             return {
@@ -21,6 +23,7 @@ export const mapEditorContextReducer = (
                 activeItem: action.newItem
             };
         case AddPlatform:
+            const length = randomInt(10, 50);
             return {
                 ...state,
                 platforms: [
@@ -28,7 +31,9 @@ export const mapEditorContextReducer = (
                     {
                         x: randomInt(50, state.width - 100),
                         y: randomInt(50, state.height - 100),
-                        length: randomInt(10, 50),
+                        width: length * state.grid,
+                        height: 2,
+                        length,
                         spawnPointsCount: 0,
                         id: `${globalId}`,
                         label: `${globalId++}`
