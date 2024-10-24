@@ -15,7 +15,6 @@ export const mapEditorContextReducer = (
     state: MapEditorContextState,
     action: MapEditorContextActions
 ): MapEditorContextState => {
-    console.log(action.type);
     switch (action.type) {
         case SetActiveItem:
             return {
