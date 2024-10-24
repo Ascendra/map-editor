@@ -1,4 +1,4 @@
-import { ActiveItem } from "../models/ActiveItem";
+import { CanvasRenderableItem } from "../models/CanvasRenderableItem";
 import { Platform } from "../models/Platform";
 import { Vector2 } from "../models/Vector2";
 
@@ -14,7 +14,7 @@ export type MapEditorContextActions =
     | { type: typeof SetWidth; newWidth: number; }
     | { type: typeof SetHeight; newHeight: number; }
     | { type: typeof SetName; newName: string; }
-    | { type: typeof SetActiveItem; newItem: ActiveItem; }
+    | { type: typeof SetActiveItem; newItem: CanvasRenderableItem; }
     | { type: typeof SetMousePosition; newPosition: Vector2; }
     | { type: typeof DeletePlatform; targetPlatform: Platform; }
     | { type: typeof AddPlatform; };

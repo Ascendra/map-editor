@@ -5,7 +5,7 @@ import {
     ReactNode,
     useReducer
 } from "react";
-import { ActiveItem } from "../models/ActiveItem";
+import { CanvasRenderableItem } from "../models/CanvasRenderableItem";
 import { Nullable } from "../models/Nullable";
 import { Platform } from "../models/Platform";
 import { Vector2 } from "../models/Vector2";
@@ -16,9 +16,8 @@ export type MapEditorContextState = {
     width: number;
     height: number;
     name: string;
-    activeItem?: ActiveItem;
+    activeItem?: CanvasRenderableItem;
     mousePosition: Vector2;
-    grid: number;
     platforms: Platform[];
 };
 
@@ -27,7 +26,6 @@ const initialMapEditorContext: MapEditorContextState = {
     height: 720,
     name: "New Map",
     mousePosition: [0, 0],
-    grid: 8,
     platforms: []
 };
 
