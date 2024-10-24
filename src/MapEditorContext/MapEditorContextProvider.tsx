@@ -18,8 +18,6 @@ export type MapEditorContextState = {
     name: string;
     activeItem?: CanvasRenderableItem;
     mousePosition: Vector2;
-    grid: number;
-    padding: number;
     platforms: Platform[];
 };
 
@@ -28,8 +26,6 @@ const initialMapEditorContext: MapEditorContextState = {
     height: 720,
     name: "New Map",
     mousePosition: [0, 0],
-    grid: 8,
-    padding: 25,
     platforms: []
 };
 

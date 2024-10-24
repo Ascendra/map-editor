@@ -1,3 +1,4 @@
+import { GRID_SIZE } from "../models/constants";
 import { randomInt } from "../utilities/randomInt";
 import {
     AddPlatform,
@@ -30,7 +31,7 @@ export const mapEditorContextReducer = (
                     {
                         x: randomInt(50, state.width - 100),
                         y: randomInt(50, state.height - 100),
-                        width: length * state.grid,
+                        width: length * GRID_SIZE,
                         height: 2,
                         length,
                         spawnPointsCount: 0,

@@ -9,8 +9,8 @@ import { SetActiveItem } from "../MapEditorContext/MapEditorContextActions";
 import { Nullable } from "../models/Nullable";
 import { CSX } from "../utilities/CSX";
 import { Canvas } from "./Canvas/Canvas";
+import { PlatformCanvasItem } from "./Canvas/PlatformCanvasItem";
 import { MousePositionOverlay } from "./MousePositionOverlay";
-import { PlatformCanvasItem } from "./PlatformCanvasItem";
 
 export const MapViewPanel: FunctionComponent = () => {
     const { height, width, platforms } = useMapEditorContext();

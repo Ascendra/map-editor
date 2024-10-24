@@ -10,7 +10,7 @@ type LineProps = {
 };
 
 export const Line: FunctionComponent<LineProps> = (
-    { start, end, lineDash, color }
+    { start, end, lineDash = [], color = "#000000" }
 ) => {
     const context = useContext2d();
 
@@ -18,8 +18,8 @@ export const Line: FunctionComponent<LineProps> = (
         context.beginPath();
         context.moveTo(start[0], start[1]);
         context.lineTo(end[0], end[1]);
-        context.strokeStyle = color || "#000000";
-        context.setLineDash(lineDash || []);
+        context.strokeStyle = color;
+        context.setLineDash(lineDash);
         context.stroke();
     }
 
