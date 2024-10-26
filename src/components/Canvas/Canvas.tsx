@@ -42,8 +42,8 @@ export const Canvas = forwardRef<
 
     return (
         <canvas
-            height={height}
             width={width}
+            height={height}
             ref={canvasRef}
         >
             <CanvasContext2d.Provider value={context2d}>

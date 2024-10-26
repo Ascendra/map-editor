@@ -1,8 +1,6 @@
-import { ActiveItem } from "./ActiveItem";
+import { CanvasRenderableItem } from "./CanvasRenderableItem";
 
-export type Platform = ActiveItem & {
-    x: number;
-    y: number;
+export type Platform = CanvasRenderableItem & {
     length: number;
     spawnPointsCount: number;
 };

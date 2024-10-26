@@ -4,11 +4,11 @@ import {
     useMapEditorContextDispatch
 } from "../MapEditorContext";
 import { SetActiveItem } from "../MapEditorContext/MapEditorContextActions";
-import { ActiveItem } from "../models/ActiveItem";
+import { CanvasRenderableItem } from "../models/CanvasRenderableItem";
 import { CSX } from "../utilities/CSX";
 
 type ListItemProps = {
-    item: ActiveItem;
+    item: CanvasRenderableItem;
     onDelete: () => void;
 };
 

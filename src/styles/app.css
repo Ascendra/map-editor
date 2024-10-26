@@ -83,6 +83,10 @@
     height: 100%;
 }
 
+.map-view-panel.pointer {
+    cursor: pointer;
+}
+
 .map-view-panel canvas {
     border: solid 1px #000000;
 }
