@@ -12,6 +12,8 @@ import {
     SetMapItemLabel,
     SetMapItemPosition,
     SetMapItemSize,
+    SetMapName,
+    SetMapSize,
     SetMousePosition,
     SetPlatformSpawnCount
 } from "./MapEditorContextActions";
@@ -99,6 +101,17 @@ export const mapEditorContextReducer = (
                         height: action.newSize[1]
                     }
                 }
+            };
+        case SetMapName:
+            return {
+                ...state,
+                name: action.newName
+            };
+        case SetMapSize:
+            return {
+                ...state,
+                width: action.newSize[0],
+                height: action.newSize[1]
             };
         case SetMousePosition:
             return {

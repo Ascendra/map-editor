@@ -3,6 +3,7 @@ import { useDocumentMapItemDropCapture } from "../hooks/useDocumentMapItemDropCa
 import { DetailsPanel } from "./DetailsPanel";
 import { MapViewPanel } from "./MapViewPanel";
 import { PlatformsPanel } from "./PlatformsPanel";
+import { TitlePanel } from "./TitlePanel";
 
 export const Root: FunctionComponent = () => {
     useDocumentMapItemDropCapture();
@@ -10,7 +11,7 @@ export const Root: FunctionComponent = () => {
     return (
         <>
             <div id="top" className="panel-container horizontal">
-                {/* <generic-inputs-panel></generic-inputs-panel> */}
+                <TitlePanel />
             </div>
             <div id="left" className="panel-container vertical">
                 <PlatformsPanel />

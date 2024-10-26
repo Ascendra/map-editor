@@ -1,16 +1,22 @@
 import { useEffect } from "react";
-import { useMapEditorContextDispatch } from "../MapEditorContext";
+import {
+    useMapEditorContext,
+    useMapEditorContextDispatch
+} from "../MapEditorContext";
 import { SetGrabbedMapItemId } from "../MapEditorContext/MapEditorContextActions";
 
 export const useDocumentMapItemDropCapture = () => {
+    const { grabbedItemId } = useMapEditorContext();
     const dispatch = useMapEditorContextDispatch();
 
     useEffect(() => {
         const dropGrabbedMapItem = () => {
-            dispatch({
-                type: SetGrabbedMapItemId,
-                newItemId: null
-            });
+            if (grabbedItemId !== null) {
+                dispatch({
+                    type: SetGrabbedMapItemId,
+                    newItemId: null
+                });
+            }
         };
 
         document.addEventListener("mouseup", dropGrabbedMapItem);
@@ -18,5 +24,5 @@ export const useDocumentMapItemDropCapture = () => {
         return () => {
             document.removeEventListener("mouseup", dropGrabbedMapItem);
         };
-    }, [dispatch]);
+    }, [dispatch, grabbedItemId]);
 };
