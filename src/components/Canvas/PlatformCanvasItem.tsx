@@ -1,22 +1,21 @@
 import { FunctionComponent } from "react";
 import { useMapEditorContext } from "../../MapEditorContext";
-import { Platform } from "../../models/Platform";
 import { Line } from "./Line";
 import { MapItemCanvasHighlight } from "./MapItemCanvasHighlight";
 
 type PlatformCanvasItemProps = {
-    platform: Platform;
+    platformId: string;
     highlight: boolean;
 };
 
 export const PlatformCanvasItem: FunctionComponent<PlatformCanvasItemProps> = (
-    { platform, highlight }
+    { platformId, highlight }
 ) => {
-    const { activeItem } = useMapEditorContext();
+    const { mapItems, activeItemId } = useMapEditorContext();
 
-    const { x, y, width, height } = platform;
+    const { x, y, width, height } = mapItems[platformId];
 
-    const isActive = activeItem === platform;
+    const isActive = activeItemId === platformId;
 
     return (
         <>

@@ -3,37 +3,38 @@ import {
     useMapEditorContext,
     useMapEditorContextDispatch
 } from "../MapEditorContext";
-import { SetActiveItem } from "../MapEditorContext/MapEditorContextActions";
-import { CanvasRenderableItem } from "../models/CanvasRenderableItem";
+import { SetActiveItemId } from "../MapEditorContext/MapEditorContextActions";
 import { CSX } from "../utilities/CSX";
 
 type ListItemProps = {
-    item: CanvasRenderableItem;
+    itemId: string;
     onDelete: () => void;
 };
 
 export const ListItem: FunctionComponent<ListItemProps> = (
-    { item, onDelete }
+    { itemId, onDelete }
 ) => {
     const dispatch = useMapEditorContextDispatch();
-    const mapEditorContext = useMapEditorContext();
+    const { activeItemId, mapItems } = useMapEditorContext();
 
     const setActive = () => {
         dispatch({
-            type: SetActiveItem,
-            newItem: item
+            type: SetActiveItemId,
+            newItemId: itemId
         });
     };
+
+    const { label } = mapItems[itemId];
 
     return (
         <div
             onClick={setActive}
             className={CSX({
                 "list-item": true,
-                "active": mapEditorContext.activeItem === item
+                "active": activeItemId === itemId
             })}
         >
-            <span className="label">{item.label}</span>
+            <span className="label">{label}</span>
             <button
                 onClick={onDelete}
                 className="delete-button"
