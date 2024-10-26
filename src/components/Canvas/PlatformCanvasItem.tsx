@@ -1,6 +1,5 @@
 import { FunctionComponent } from "react";
 import { useMapEditorContext } from "../../MapEditorContext";
-import { PADDING_SIZE } from "../../models/constants";
 import { Platform } from "../../models/Platform";
 import { Line } from "./Line";
 import { MapItemCanvasHighlight } from "./MapItemCanvasHighlight";

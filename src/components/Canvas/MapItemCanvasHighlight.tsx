@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { PADDING_SIZE } from "../../models/constants";
+import { constants } from "../../models/constants";
 import { Rect, RectProps } from "./Rect";
 
 type MapItemCanvasHighlightProps = Omit<RectProps, "lineDash" | "color"> & {
@@ -14,6 +14,8 @@ export const MapItemCanvasHighlight: FunctionComponent<
     if (!show) {
         return null;
     }
+
+    const { PADDING_SIZE } = constants;
 
     return (
         <Rect

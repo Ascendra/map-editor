@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMapEditorContext } from "../MapEditorContext";
 import { CanvasRenderableItem } from "../models/CanvasRenderableItem";
-import { PADDING_SIZE } from "../models/constants";
+import { constants } from "../models/constants";
 import { Nullable } from "../models/Nullable";
 
 export const useHighlightedItemDetector = (): Nullable<
@@ -14,6 +14,8 @@ export const useHighlightedItemDetector = (): Nullable<
 
     useEffect(() => {
         const [mouseX, mouseY] = mousePosition;
+
+        const { PADDING_SIZE } = constants;
 
         const highlightedPlatform = platforms.find(
             ({ x, y, width, height }) => {
