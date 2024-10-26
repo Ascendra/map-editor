@@ -7,7 +7,6 @@ export const useDocumentMapItemDropCapture = () => {
 
     useEffect(() => {
         const dropGrabbedMapItem = () => {
-            console.log("mouse up");
             dispatch({
                 type: SetGrabbedMapItemId,
                 newItemId: null
