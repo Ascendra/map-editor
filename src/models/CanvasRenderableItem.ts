@@ -1,3 +1,5 @@
+import { MapItemType } from "./MapItemType";
+
 export interface CanvasRenderableItem {
     x: number;
     y: number;
@@ -5,4 +7,5 @@ export interface CanvasRenderableItem {
     height: number;
     label: string;
     id: string;
+    type: MapItemType;
 }

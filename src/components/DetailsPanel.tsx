@@ -1,18 +1,14 @@
-import { act, ChangeEvent, FunctionComponent } from "react";
-import {
-    useMapEditorContext,
-    useMapEditorContextDispatch
-} from "../MapEditorContext";
-import { SetMapItemPosition } from "../MapEditorContext/MapEditorContextActions";
-import { DetailsInput, InputType } from "./DetailsInput";
+import { FunctionComponent } from "react";
+import { useMapEditorContext } from "../MapEditorContext";
+import { MapItemType } from "../models/MapItemType";
+import { PlatformDetail } from "./PlatformDetails";
 
 export const DetailsPanel: FunctionComponent = () => {
     const { activeItemId, mapItems } = useMapEditorContext();
-    const dispatch = useMapEditorContextDispatch();
 
     if (activeItemId === null) {
         return (
-            <div className="platforms-panel">
+            <div className="details-panel">
                 <h2>Details</h2>
             </div>
         );
@@ -20,43 +16,18 @@ export const DetailsPanel: FunctionComponent = () => {
 
     const item = mapItems[activeItemId];
 
-    const updateItem =
-        (itemKey: string) => (event: ChangeEvent<HTMLInputElement>) => {
-            const newValue = +event.target.value;
-
-            switch (itemKey) {
-                case "x":
-                    dispatch({
-                        type: SetMapItemPosition,
-                        itemId: activeItemId,
-                        newPosition: [newValue, item.y]
-                    });
-                    break;
-                case "y":
-                    dispatch({
-                        type: SetMapItemPosition,
-                        itemId: activeItemId,
-                        newPosition: [item.x, newValue]
-                    });
-                    break;
-            }
-        };
-
-    return (
-        <div className="platforms-panel">
-            <h2>Details</h2>
-            <DetailsInput
-                type={InputType.Text}
-                value={item.x}
-                label="x"
-                onChange={updateItem("x")}
-            />
-            <DetailsInput
-                type={InputType.Text}
-                value={item.y}
-                label="y"
-                onChange={updateItem("y")}
-            />
-        </div>
-    );
+    switch (item.type) {
+        case MapItemType.Platform:
+            return (
+                <div className="details-panel">
+                    <div>
+                        <h2>Details</h2>
+                        <p className="subtitle">{item.id}</p>
+                    </div>
+                    <div className="details">
+                        <PlatformDetail platform={item} />
+                    </div>
+                </div>
+            );
+    }
 };

@@ -1,48 +1,62 @@
-import { act, ChangeEvent, FunctionComponent } from "react";
+import { ChangeEvent, FunctionComponent } from "react";
+import { useMapEditorContextDispatch } from "../MapEditorContext";
 import {
-    useMapEditorContext,
-    useMapEditorContextDispatch
-} from "../MapEditorContext";
-import {
+    SetMapItemLabel,
     SetMapItemPosition,
-    SetPlatformLength
+    SetMapItemSize,
+    SetPlatformSpawnCount
 } from "../MapEditorContext/MapEditorContextActions";
 import { Platform } from "../models/Platform";
+import { onlyPositiveIntegers } from "../utilities/validators";
 import { DetailsInput, InputType } from "./DetailsInput";
 
 export type PlatformDetailProps = {
-    item: Platform;
+    platform: Platform;
 };
 
 export const PlatformDetail: FunctionComponent<PlatformDetailProps> = (
-    { item }
+    { platform }
 ) => {
     const dispatch = useMapEditorContextDispatch();
 
     const updateItem =
         (itemKey: string) => (event: ChangeEvent<HTMLInputElement>) => {
-            const newValue = +event.target.value;
+            const newValue = event.target.value;
 
             switch (itemKey) {
+                case "label":
+                    dispatch({
+                        type: SetMapItemLabel,
+                        itemId: platform.id,
+                        newLabel: newValue
+                    });
+                    break;
                 case "x":
                     dispatch({
                         type: SetMapItemPosition,
-                        itemId: item.id,
-                        newPosition: [newValue, item.y]
+                        itemId: platform.id,
+                        newPosition: [+newValue, platform.y]
                     });
                     break;
                 case "y":
                     dispatch({
                         type: SetMapItemPosition,
-                        itemId: item.id,
-                        newPosition: [item.x, newValue]
+                        itemId: platform.id,
+                        newPosition: [platform.x, +newValue]
                     });
                     break;
-                case "length":
+                case "width":
                     dispatch({
-                        type: SetPlatformLength,
-                        platformId: item.id,
-                        newLength: newValue
+                        type: SetMapItemSize,
+                        itemId: platform.id,
+                        newSize: [+newValue, platform.height]
+                    });
+                    break;
+                case "spawnPointCount":
+                    dispatch({
+                        type: SetPlatformSpawnCount,
+                        platformId: platform.id,
+                        newCount: +newValue
                     });
                     break;
             }
@@ -52,21 +66,39 @@ export const PlatformDetail: FunctionComponent<PlatformDetailProps> = (
         <>
             <DetailsInput
                 type={InputType.Text}
-                value={item.x}
+                value={platform.label}
+                label="Label"
+                onChange={updateItem("label")}
+            />
+            <DetailsInput
+                type={InputType.Text}
+                value={platform.x}
                 label="X"
+                validations={[onlyPositiveIntegers]}
                 onChange={updateItem("x")}
+                className="left"
             />
             <DetailsInput
                 type={InputType.Text}
-                value={item.y}
+                value={platform.y}
                 label="Y"
+                validations={[onlyPositiveIntegers]}
                 onChange={updateItem("y")}
+                className="right"
             />
             <DetailsInput
                 type={InputType.Text}
-                value={item.length}
-                label="Length"
-                onChange={updateItem("length")}
+                value={platform.width}
+                label="Width"
+                validations={[onlyPositiveIntegers]}
+                onChange={updateItem("width")}
+            />
+            <DetailsInput
+                type={InputType.Text}
+                value={platform.spawnPointCount}
+                label="Spawn Point Count"
+                validations={[onlyPositiveIntegers]}
+                onChange={updateItem("spawnPointCount")}
             />
         </>
     );

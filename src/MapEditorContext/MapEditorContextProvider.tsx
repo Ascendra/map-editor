@@ -5,8 +5,8 @@ import {
     ReactNode,
     useReducer
 } from "react";
-import { CanvasRenderableItem } from "../models/CanvasRenderableItem";
 import { Nullable } from "../models/Nullable";
+import { Platform } from "../models/Platform";
 import { Vector2 } from "../models/Vector2";
 import { MapEditorContextActions } from "./MapEditorContextActions";
 import { mapEditorContextReducer } from "./MapEditorContextReducer";
@@ -19,7 +19,7 @@ export type MapEditorContextState = {
     grabbedItemId: Nullable<string>;
     mousePosition: Vector2;
     platformIds: string[];
-    mapItems: Record<string, CanvasRenderableItem>;
+    mapItems: Record<string, Platform>;
 };
 
 const initialMapEditorContext: MapEditorContextState = {

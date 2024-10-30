@@ -1,5 +1,6 @@
 import * as uuid from "uuid";
 import { constants } from "../models/constants";
+import { MapItemType } from "../models/MapItemType";
 import { Platform } from "../models/Platform";
 import { randomInt } from "../utilities/randomInt";
 import {
@@ -8,8 +9,11 @@ import {
     MapEditorContextActions,
     SetActiveItemId,
     SetGrabbedMapItemId,
+    SetMapItemLabel,
     SetMapItemPosition,
-    SetMousePosition
+    SetMapItemSize,
+    SetMousePosition,
+    SetPlatformSpawnCount
 } from "./MapEditorContextActions";
 import { MapEditorContextState } from "./MapEditorContextProvider";
 
@@ -25,11 +29,11 @@ export const mapEditorContextReducer = (
                 x: randomInt(50, state.width - 100),
                 y: randomInt(50, state.height - 100),
                 width: length * constants.GRID_SIZE,
-                height: 2,
-                length,
+                height: 0,
                 spawnPointCount: 0,
                 id: newId,
-                label: newId
+                label: newId,
+                type: MapItemType.Platform
             };
 
             return {
@@ -60,12 +64,22 @@ export const mapEditorContextReducer = (
                 ...state,
                 grabbedItemId: action.newItemId
             };
+        case SetMapItemLabel:
+            return {
+                ...state,
+                mapItems: {
+                    ...state.mapItems,
+                    [action.itemId]: {
+                        ...state.mapItems[action.itemId],
+                        label: action.newLabel
+                    }
+                }
+            };
         case SetMapItemPosition:
-            const currentlyGrabbedItem = state.mapItems[action.itemId];
             const newMapItems = {
                 ...state.mapItems,
                 [action.itemId]: {
-                    ...currentlyGrabbedItem,
+                    ...state.mapItems[action.itemId],
                     x: action.newPosition[0],
                     y: action.newPosition[1]
                 }
@@ -74,10 +88,33 @@ export const mapEditorContextReducer = (
                 ...state,
                 mapItems: newMapItems
             };
+        case SetMapItemSize:
+            return {
+                ...state,
+                mapItems: {
+                    ...state.mapItems,
+                    [action.itemId]: {
+                        ...state.mapItems[action.itemId],
+                        width: action.newSize[0],
+                        height: action.newSize[1]
+                    }
+                }
+            };
         case SetMousePosition:
             return {
                 ...state,
                 mousePosition: action.newPosition
+            };
+        case SetPlatformSpawnCount:
+            return {
+                ...state,
+                mapItems: {
+                    ...state.mapItems,
+                    [action.platformId]: {
+                        ...state.mapItems[action.platformId],
+                        spawnPointCount: action.newCount
+                    }
+                }
             };
     }
 };
