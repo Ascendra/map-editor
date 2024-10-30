@@ -1,6 +1,5 @@
 import { FunctionComponent } from "react";
 import { useMapEditorContext } from "../../MapEditorContext";
-import { Line } from "./Line";
 import { MapItemCanvasHighlight } from "./MapItemCanvasHighlight";
 import { Rect } from "./Rect";
 
