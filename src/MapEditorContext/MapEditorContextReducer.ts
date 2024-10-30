@@ -1,5 +1,6 @@
 import * as uuid from "uuid";
 import { constants } from "../models/constants";
+import { Platform } from "../models/Platform";
 import { randomInt } from "../utilities/randomInt";
 import {
     AddPlatform,
@@ -20,13 +21,13 @@ export const mapEditorContextReducer = (
         case AddPlatform:
             const length = randomInt(10, 50);
             const newId = uuid.v4();
-            const newPlatform = {
+            const newPlatform: Platform = {
                 x: randomInt(50, state.width - 100),
                 y: randomInt(50, state.height - 100),
                 width: length * constants.GRID_SIZE,
                 height: 2,
                 length,
-                spawnPointsCount: 0,
+                spawnPointCount: 0,
                 id: newId,
                 label: newId
             };

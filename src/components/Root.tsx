@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import { useDocumentMapItemDropCapture } from "../hooks/useDocumentMapItemDropCapture";
+import { DetailsPanel } from "./DetailsPanel";
 import { MapViewPanel } from "./MapViewPanel";
 import { PlatformsPanel } from "./PlatformsPanel";
 
@@ -20,7 +21,7 @@ export const Root: FunctionComponent = () => {
             </div>
             <div id="right" className="panel-container vertical">
                 {/* <entities-panel></entities-panel> */}
-                {/* <details-panel></details-panel> */}
+                <DetailsPanel />
             </div>
         </>
     );
