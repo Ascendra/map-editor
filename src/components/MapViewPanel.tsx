@@ -1,11 +1,19 @@
-import { FunctionComponent, useRef } from "react";
+import {
+    FunctionComponent,
+    MouseEvent as ReactMouseEvent,
+    useRef
+} from "react";
 import { useHighlightedItemDetector } from "../hooks/useHighlightedItemDetector";
 import { useMapEditorMousePositionRecorder } from "../hooks/useMapEditorMousePositionRecorder";
 import {
     useMapEditorContext,
     useMapEditorContextDispatch
 } from "../MapEditorContext";
-import { SetActiveItem } from "../MapEditorContext/MapEditorContextActions";
+import {
+    SetActiveItemId,
+    SetGrabbedMapItemId,
+    SetMapItemPosition
+} from "../MapEditorContext/MapEditorContextActions";
 import { Nullable } from "../models/Nullable";
 import { CSX } from "../utilities/CSX";
 import { Canvas } from "./Canvas/Canvas";
@@ -13,19 +21,40 @@ import { PlatformCanvasItem } from "./Canvas/PlatformCanvasItem";
 import { MousePositionOverlay } from "./MousePositionOverlay";
 
 export const MapViewPanel: FunctionComponent = () => {
-    const { height, width, platforms } = useMapEditorContext();
+    const { height, width, platformIds, grabbedItemId, mapItems } =
+        useMapEditorContext();
     const dispatch = useMapEditorContextDispatch();
     const canvasRef = useRef<Nullable<HTMLCanvasElement>>(null);
 
     useMapEditorMousePositionRecorder(canvasRef, [width, height]);
 
-    const highlightedItem = useHighlightedItemDetector();
+    const highlightedItemId = useHighlightedItemDetector();
 
-    const setHighlightedItemAsActive = () => {
-        if (highlightedItem !== null) {
+    const pickUpMapItem = () => {
+        if (highlightedItemId !== null) {
             dispatch({
-                type: SetActiveItem,
-                newItem: highlightedItem
+                type: SetActiveItemId,
+                newItemId: highlightedItemId
+            });
+
+            dispatch({
+                type: SetGrabbedMapItemId,
+                newItemId: highlightedItemId
+            });
+        }
+    };
+
+    const dragMapItem = (
+        event: ReactMouseEvent<HTMLDivElement, MouseEvent>
+    ) => {
+        if (grabbedItemId !== null) {
+            const { movementX, movementY } = event;
+            const { x, y } = mapItems[grabbedItemId];
+
+            dispatch({
+                type: SetMapItemPosition,
+                itemId: grabbedItemId,
+                newPosition: [x + movementX, y + movementY]
             });
         }
     };
@@ -34,17 +63,18 @@ export const MapViewPanel: FunctionComponent = () => {
         <div
             className={CSX({
                 "map-view-panel": true,
-                "pointer": highlightedItem !== null
+                "pointer": highlightedItemId !== null
             })}
-            onClick={setHighlightedItemAsActive}
+            onMouseDown={pickUpMapItem}
+            onMouseMove={dragMapItem}
         >
             <MousePositionOverlay>
                 <Canvas height={height} width={width} ref={canvasRef}>
-                    {platforms.map((platform) => (
+                    {platformIds.map((id) => (
                         <PlatformCanvasItem
-                            key={platform.id}
-                            platform={platform}
-                            highlight={highlightedItem === platform}
+                            key={mapItems[id].label}
+                            platformId={id}
+                            highlight={highlightedItemId === id}
                         />
                     ))}
                 </Canvas>

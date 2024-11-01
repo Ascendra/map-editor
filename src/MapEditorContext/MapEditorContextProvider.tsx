@@ -5,7 +5,6 @@ import {
     ReactNode,
     useReducer
 } from "react";
-import { CanvasRenderableItem } from "../models/CanvasRenderableItem";
 import { Nullable } from "../models/Nullable";
 import { Platform } from "../models/Platform";
 import { Vector2 } from "../models/Vector2";
@@ -16,9 +15,11 @@ export type MapEditorContextState = {
     width: number;
     height: number;
     name: string;
-    activeItem?: CanvasRenderableItem;
+    activeItemId: Nullable<string>;
+    grabbedItemId: Nullable<string>;
     mousePosition: Vector2;
-    platforms: Platform[];
+    platformIds: string[];
+    mapItems: Record<string, Platform>;
 };
 
 const initialMapEditorContext: MapEditorContextState = {
@@ -26,7 +27,10 @@ const initialMapEditorContext: MapEditorContextState = {
     height: 720,
     name: "New Map",
     mousePosition: [0, 0],
-    platforms: []
+    activeItemId: null,
+    grabbedItemId: null,
+    platformIds: [],
+    mapItems: {}
 };
 
 export const MapEditorContext = createContext<Nullable<MapEditorContextState>>(

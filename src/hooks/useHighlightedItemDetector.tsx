@@ -1,24 +1,22 @@
 import { useEffect, useState } from "react";
 import { useMapEditorContext } from "../MapEditorContext";
-import { CanvasRenderableItem } from "../models/CanvasRenderableItem";
 import { constants } from "../models/constants";
 import { Nullable } from "../models/Nullable";
 
-export const useHighlightedItemDetector = (): Nullable<
-    CanvasRenderableItem
-> => {
-    const [highlightedItem, setHighlightedItem] = useState<
-        Nullable<CanvasRenderableItem>
+export const useHighlightedItemDetector = (): Nullable<string> => {
+    const [highlightedItemId, setHighlightedItemId] = useState<
+        Nullable<string>
     >(null);
-    const { mousePosition, platforms } = useMapEditorContext();
+    const { mousePosition, platformIds, mapItems } = useMapEditorContext();
 
     useEffect(() => {
         const [mouseX, mouseY] = mousePosition;
 
         const { PADDING_SIZE } = constants;
 
-        const highlightedPlatform = platforms.find(
-            ({ x, y, width, height }) => {
+        const highlightedPlatformId = platformIds.find(
+            (id) => {
+                const { x, y, width, height } = mapItems[id];
                 const left = x - PADDING_SIZE;
                 const top = y - PADDING_SIZE;
                 const right = x + width + PADDING_SIZE;
@@ -29,12 +27,12 @@ export const useHighlightedItemDetector = (): Nullable<
             }
         );
 
-        if (highlightedPlatform !== undefined) {
-            setHighlightedItem(highlightedPlatform);
+        if (highlightedPlatformId !== undefined) {
+            setHighlightedItemId(highlightedPlatformId);
         } else {
-            setHighlightedItem(null);
+            setHighlightedItemId(null);
         }
-    }, [mousePosition, platforms]);
+    }, [mousePosition, platformIds, mapItems]);
 
-    return highlightedItem;
+    return highlightedItemId;
 };

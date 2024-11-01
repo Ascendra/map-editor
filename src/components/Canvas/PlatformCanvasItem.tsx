@@ -1,28 +1,29 @@
 import { FunctionComponent } from "react";
 import { useMapEditorContext } from "../../MapEditorContext";
-import { Platform } from "../../models/Platform";
-import { Line } from "./Line";
 import { MapItemCanvasHighlight } from "./MapItemCanvasHighlight";
+import { Rect } from "./Rect";
 
 type PlatformCanvasItemProps = {
-    platform: Platform;
+    platformId: string;
     highlight: boolean;
 };
 
 export const PlatformCanvasItem: FunctionComponent<PlatformCanvasItemProps> = (
-    { platform, highlight }
+    { platformId, highlight }
 ) => {
-    const { activeItem } = useMapEditorContext();
+    const { mapItems, activeItemId } = useMapEditorContext();
 
-    const { x, y, width, height } = platform;
+    const { x, y, width, height } = mapItems[platformId];
 
-    const isActive = activeItem === platform;
+    const isActive = activeItemId === platformId;
 
     return (
         <>
-            <Line
-                start={[x, y]}
-                end={[x + width, y]}
+            <Rect
+                x={x}
+                y={y}
+                width={width}
+                height={height}
                 color={isActive ? "#FF0000" : "#000000"}
             />
             <MapItemCanvasHighlight

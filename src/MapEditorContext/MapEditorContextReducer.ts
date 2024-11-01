@@ -1,58 +1,120 @@
+import * as uuid from "uuid";
 import { constants } from "../models/constants";
+import { MapItemType } from "../models/MapItemType";
+import { Platform } from "../models/Platform";
 import { randomInt } from "../utilities/randomInt";
 import {
     AddPlatform,
     DeletePlatform,
     MapEditorContextActions,
-    SetActiveItem,
-    SetMousePosition
+    SetActiveItemId,
+    SetGrabbedMapItemId,
+    SetMapItemLabel,
+    SetMapItemPosition,
+    SetMapItemSize,
+    SetMousePosition,
+    SetPlatformSpawnCount
 } from "./MapEditorContextActions";
 import { MapEditorContextState } from "./MapEditorContextProvider";
-
-// we'll need to remove this eventually and make this reducer a pure function
-let globalId = 0;
 
 export const mapEditorContextReducer = (
     state: MapEditorContextState,
     action: MapEditorContextActions
 ): MapEditorContextState => {
     switch (action.type) {
-        case SetActiveItem:
-            return {
-                ...state,
-                activeItem: action.newItem
-            };
         case AddPlatform:
             const length = randomInt(10, 50);
+            const newId = uuid.v4();
+            const newPlatform: Platform = {
+                x: randomInt(50, state.width - 100),
+                y: randomInt(50, state.height - 100),
+                width: length * constants.GRID_SIZE,
+                height: 0,
+                spawnPointCount: 0,
+                id: newId,
+                label: newId,
+                type: MapItemType.Platform
+            };
+
             return {
                 ...state,
-                platforms: [
-                    ...state.platforms,
-                    {
-                        x: randomInt(50, state.width - 100),
-                        y: randomInt(50, state.height - 100),
-                        width: length * constants.GRID_SIZE,
-                        height: 2,
-                        length,
-                        spawnPointsCount: 0,
-                        id: `${globalId}`,
-                        label: `${globalId++}`
-                    }
-                ]
+                platformIds: [
+                    ...state.platformIds,
+                    newId
+                ],
+                mapItems: {
+                    ...state.mapItems,
+                    [newId]: newPlatform
+                }
             };
         case DeletePlatform:
             return {
                 ...state,
-                platforms: state.platforms.filter(platform =>
-                    platform !== action.targetPlatform
+                platformIds: state.platformIds.filter(id =>
+                    id !== action.targetPlatformId
                 )
+            };
+        case SetActiveItemId:
+            return {
+                ...state,
+                activeItemId: action.newItemId
+            };
+        case SetGrabbedMapItemId:
+            return {
+                ...state,
+                grabbedItemId: action.newItemId
+            };
+        case SetMapItemLabel:
+            return {
+                ...state,
+                mapItems: {
+                    ...state.mapItems,
+                    [action.itemId]: {
+                        ...state.mapItems[action.itemId],
+                        label: action.newLabel
+                    }
+                }
+            };
+        case SetMapItemPosition:
+            const newMapItems = {
+                ...state.mapItems,
+                [action.itemId]: {
+                    ...state.mapItems[action.itemId],
+                    x: action.newPosition[0],
+                    y: action.newPosition[1]
+                }
+            };
+            return {
+                ...state,
+                mapItems: newMapItems
+            };
+        case SetMapItemSize:
+            return {
+                ...state,
+                mapItems: {
+                    ...state.mapItems,
+                    [action.itemId]: {
+                        ...state.mapItems[action.itemId],
+                        width: action.newSize[0],
+                        height: action.newSize[1]
+                    }
+                }
             };
         case SetMousePosition:
             return {
                 ...state,
                 mousePosition: action.newPosition
             };
-        default:
-            throw Error(`Unknown action: ${String(action.type)}`);
+        case SetPlatformSpawnCount:
+            return {
+                ...state,
+                mapItems: {
+                    ...state.mapItems,
+                    [action.platformId]: {
+                        ...state.mapItems[action.platformId],
+                        spawnPointCount: action.newCount
+                    }
+                }
+            };
     }
 };

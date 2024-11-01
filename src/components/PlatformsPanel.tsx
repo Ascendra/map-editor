@@ -7,11 +7,10 @@ import {
     AddPlatform,
     DeletePlatform
 } from "../MapEditorContext/MapEditorContextActions";
-import { Platform } from "../models/Platform";
 import { ListItem } from "./ListItem";
 
 export const PlatformsPanel: FunctionComponent = () => {
-    const { platforms } = useMapEditorContext();
+    const { platformIds, mapItems } = useMapEditorContext();
     const dispatch = useMapEditorContextDispatch();
 
     const addPlatform = () => {
@@ -20,10 +19,10 @@ export const PlatformsPanel: FunctionComponent = () => {
         });
     };
 
-    const deletePlatform = (platform: Platform) => () => {
+    const deletePlatform = (platformId: string) => () => {
         dispatch({
             type: DeletePlatform,
-            targetPlatform: platform
+            targetPlatformId: platformId
         });
     };
 
@@ -32,11 +31,11 @@ export const PlatformsPanel: FunctionComponent = () => {
             <h2>Platforms</h2>
             <button type="button" onClick={addPlatform}>Add</button>
             <div className="list-items">
-                {platforms.map((platform) => (
+                {platformIds.map((id) => (
                     <ListItem
-                        key={platform.id}
-                        item={platform}
-                        onDelete={deletePlatform(platform)}
+                        key={id}
+                        itemId={id}
+                        onDelete={deletePlatform(id)}
                     />
                 ))}
             </div>
