@@ -1,33 +1,49 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import { useMapEditorContext } from "../MapEditorContext";
-import { MapItemType } from "../models/MapItemType";
-import { PlatformDetail } from "./PlatformDetails";
+import { isEntity } from "../utilities/isEntity";
+import { isPlatform } from "../utilities/isPlatform";
+import { EntityDetail } from "./EntityDetail";
+import { PlatformDetail } from "./PlatformDetail";
+
+const DetailsPanelWrapper: FunctionComponent<
+    { subTitle?: string; children?: ReactNode; }
+> = ({ subTitle, children }) => {
+    return (
+        <div className="details-panel">
+            <div>
+                <h2>Details</h2>
+                {subTitle
+                    && <p className="subtitle">{subTitle}</p>}
+            </div>
+            <div className="details">
+                {children}
+            </div>
+        </div>
+    );
+};
 
 export const DetailsPanel: FunctionComponent = () => {
     const { activeItemId, mapItems } = useMapEditorContext();
 
     if (activeItemId === null) {
-        return (
-            <div className="details-panel">
-                <h2>Details</h2>
-            </div>
-        );
+        return <DetailsPanelWrapper />;
     }
 
     const item = mapItems[activeItemId];
 
-    switch (item.type) {
-        case MapItemType.Platform:
-            return (
-                <div className="details-panel">
-                    <div>
-                        <h2>Details</h2>
-                        <p className="subtitle">{item.id}</p>
-                    </div>
-                    <div className="details">
-                        <PlatformDetail platform={item} />
-                    </div>
-                </div>
-            );
+    if (isPlatform(item)) {
+        return (
+            <DetailsPanelWrapper subTitle={item.id}>
+                <PlatformDetail platform={item} />
+            </DetailsPanelWrapper>
+        );
+    }
+
+    if (isEntity(item)) {
+        return (
+            <DetailsPanelWrapper subTitle={item.id}>
+                <EntityDetail entity={item} />
+            </DetailsPanelWrapper>
+        );
     }
 };

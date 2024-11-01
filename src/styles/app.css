@@ -81,6 +81,23 @@
 }
 
 
+.entities-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.entities-panel .list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+    overflow: auto;
+}
+
+
 .map-view-panel {
     padding: 1rem;
     height: 100%;
