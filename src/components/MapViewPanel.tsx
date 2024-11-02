@@ -15,14 +15,25 @@ import {
     SetMapItemPosition
 } from "../MapEditorContext/MapEditorContextActions";
 import { Nullable } from "../models/Nullable";
+import { asserts } from "../utilities/asserts";
 import { CSX } from "../utilities/CSX";
+import { isEntity } from "../utilities/isEntity";
+import { isPlatform } from "../utilities/isPlatform";
 import { Canvas } from "./Canvas/Canvas";
+import { EntityCanvasItem } from "./Canvas/EntityCanvasItem";
 import { PlatformCanvasItem } from "./Canvas/PlatformCanvasItem";
 import { MousePositionOverlay } from "./MousePositionOverlay";
 
 export const MapViewPanel: FunctionComponent = () => {
-    const { height, width, platformIds, grabbedItemId, mapItems } =
-        useMapEditorContext();
+    const {
+        height,
+        width,
+        platformIds,
+        entityIds,
+        grabbedItemId,
+        mapItems,
+        activeItemId
+    } = useMapEditorContext();
     const dispatch = useMapEditorContextDispatch();
     const canvasRef = useRef<Nullable<HTMLCanvasElement>>(null);
 
@@ -59,6 +70,15 @@ export const MapViewPanel: FunctionComponent = () => {
         }
     };
 
+    const clearActiveItem = () => {
+        if (highlightedItemId === null) {
+            dispatch({
+                type: SetActiveItemId,
+                newItemId: null
+            });
+        }
+    };
+
     return (
         <div
             className={CSX({
@@ -67,16 +87,32 @@ export const MapViewPanel: FunctionComponent = () => {
             })}
             onMouseDown={pickUpMapItem}
             onMouseMove={dragMapItem}
+            onClick={clearActiveItem}
         >
             <MousePositionOverlay>
                 <Canvas height={height} width={width} ref={canvasRef}>
-                    {platformIds.map((id) => (
-                        <PlatformCanvasItem
-                            key={mapItems[id].label}
-                            platformId={id}
-                            highlight={highlightedItemId === id}
-                        />
-                    ))}
+                    {platformIds.map((id) => {
+                        asserts(isPlatform(mapItems[id]));
+                        return (
+                            <PlatformCanvasItem
+                                key={id}
+                                platform={mapItems[id]}
+                                highlight={highlightedItemId === id}
+                                active={activeItemId === id}
+                            />
+                        );
+                    })}
+                    {entityIds.map((id) => {
+                        asserts(isEntity(mapItems[id]));
+                        return (
+                            <EntityCanvasItem
+                                key={id}
+                                entity={mapItems[id]}
+                                highlight={highlightedItemId === id}
+                                active={activeItemId === id}
+                            />
+                        );
+                    })}
                 </Canvas>
             </MousePositionOverlay>
         </div>

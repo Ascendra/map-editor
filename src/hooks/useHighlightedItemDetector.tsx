@@ -7,16 +7,16 @@ export const useHighlightedItemDetector = (): Nullable<string> => {
     const [highlightedItemId, setHighlightedItemId] = useState<
         Nullable<string>
     >(null);
-    const { mousePosition, platformIds, mapItems } = useMapEditorContext();
+    const { mousePosition, mapItems } = useMapEditorContext();
 
     useEffect(() => {
         const [mouseX, mouseY] = mousePosition;
 
         const { PADDING_SIZE } = constants;
 
-        const highlightedPlatformId = platformIds.find(
-            (id) => {
-                const { x, y, width, height } = mapItems[id];
+        const highlightedItem = Object.values(mapItems).find(
+            (item) => {
+                const { x, y, width, height } = item;
                 const left = x - PADDING_SIZE;
                 const top = y - PADDING_SIZE;
                 const right = x + width + PADDING_SIZE;
@@ -27,12 +27,12 @@ export const useHighlightedItemDetector = (): Nullable<string> => {
             }
         );
 
-        if (highlightedPlatformId !== undefined) {
-            setHighlightedItemId(highlightedPlatformId);
+        if (highlightedItem !== undefined) {
+            setHighlightedItemId(highlightedItem.id);
         } else {
             setHighlightedItemId(null);
         }
-    }, [mousePosition, platformIds, mapItems]);
+    }, [mousePosition, mapItems]);
 
     return highlightedItemId;
 };

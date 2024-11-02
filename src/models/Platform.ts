@@ -1,5 +1,5 @@
-import { CanvasRenderableItem } from "./CanvasRenderableItem";
+import { MapItem } from "./MapItem";
 
-export type Platform = CanvasRenderableItem & {
+export type Platform = MapItem & {
     spawnPointCount: number;
 };
