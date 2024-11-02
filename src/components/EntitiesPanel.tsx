@@ -4,38 +4,38 @@ import {
     useMapEditorContextDispatch
 } from "../MapEditorContext";
 import {
-    AddPlatform,
-    DeletePlatform
+    AddEntity,
+    DeleteEntity
 } from "../MapEditorContext/MapEditorContextActions";
 import { ListItem } from "./ListItem";
 
-export const PlatformsPanel: FunctionComponent = () => {
-    const { platformIds } = useMapEditorContext();
+export const EntitiesPanel: FunctionComponent = () => {
+    const { entityIds } = useMapEditorContext();
     const dispatch = useMapEditorContextDispatch();
 
-    const addPlatform = () => {
+    const addEntity = () => {
         dispatch({
-            type: AddPlatform
+            type: AddEntity
         });
     };
 
-    const deletePlatform = (platformId: string) => () => {
+    const deleteEntity = (entityId: string) => () => {
         dispatch({
-            type: DeletePlatform,
-            platformId: platformId
+            type: DeleteEntity,
+            entityId: entityId
         });
     };
 
     return (
-        <div className="platforms-panel">
-            <h2>Platforms</h2>
-            <button type="button" onClick={addPlatform}>Add</button>
+        <div className="entities-panel">
+            <h2>Entities</h2>
+            <button type="button" onClick={addEntity}>Add</button>
             <div className="list-items">
-                {platformIds.map((id) => (
+                {entityIds.map((id) => (
                     <ListItem
                         key={id}
                         itemId={id}
-                        onDelete={deletePlatform(id)}
+                        onDelete={deleteEntity(id)}
                     />
                 ))}
             </div>

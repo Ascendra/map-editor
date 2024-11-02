@@ -5,6 +5,7 @@ import {
     ReactNode,
     useReducer
 } from "react";
+import { Entity } from "../models/Entity";
 import { Nullable } from "../models/Nullable";
 import { Platform } from "../models/Platform";
 import { Vector2 } from "../models/Vector2";
@@ -19,7 +20,8 @@ export type MapEditorContextState = {
     grabbedItemId: Nullable<string>;
     mousePosition: Vector2;
     platformIds: string[];
-    mapItems: Record<string, Platform>;
+    entityIds: string[];
+    mapItems: Record<string, Platform | Entity>;
 };
 
 const initialMapEditorContext: MapEditorContextState = {
@@ -30,6 +32,7 @@ const initialMapEditorContext: MapEditorContextState = {
     activeItemId: null,
     grabbedItemId: null,
     platformIds: [],
+    entityIds: [],
     mapItems: {}
 };
 

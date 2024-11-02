@@ -1,11 +1,11 @@
 import { MapItemType } from "./MapItemType";
 
-export interface CanvasRenderableItem {
+export interface MapItem {
     x: number;
     y: number;
     width: number;
     height: number;
     label: string;
     id: string;
-    type: MapItemType;
+    mapItemType: MapItemType;
 }
