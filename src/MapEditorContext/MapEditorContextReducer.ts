@@ -85,7 +85,10 @@ export const mapEditorContextReducer = (
         case DeleteEntity: {
             return {
                 ...state,
-                entityIds: state.entityIds.filter(id => id !== action.entityId)
+                entityIds: state.entityIds.filter(id => id !== action.entityId),
+                activeItemId: state.activeItemId === action.entityId
+                    ? null
+                    : state.activeItemId
             };
         }
         case DeletePlatform: {
@@ -93,7 +96,10 @@ export const mapEditorContextReducer = (
                 ...state,
                 platformIds: state.platformIds.filter(id =>
                     id !== action.platformId
-                )
+                ),
+                activeItemId: state.activeItemId === action.platformId
+                    ? null
+                    : state.activeItemId
             };
         }
         case SetEntityType: {

@@ -31,7 +31,7 @@ export const DetailsSelect: FunctionComponent<DetailsSelectProps> = (
                 onChange={onChange}
             >
                 {options.map(({ label, id }) => (
-                    <option value={id}>
+                    <option value={id} key={id}>
                         {label}
                     </option>
                 ))}

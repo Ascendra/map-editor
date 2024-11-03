@@ -12,11 +12,12 @@ type MapNameInputProps = {
     name: string;
     editable: boolean;
     onSubmit: (value: string) => void;
+    onCancel: () => void;
     onClick: () => void;
 };
 
 export const MapNameInput: FunctionComponent<MapNameInputProps> = (
-    { name, editable, onSubmit, onClick }
+    { name, editable, onSubmit, onClick, onCancel }
 ) => {
     const [value, setValue] = useState(name);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -27,6 +28,7 @@ export const MapNameInput: FunctionComponent<MapNameInputProps> = (
 
     const resetValue = () => {
         setValue(name);
+        onCancel();
     };
 
     const submitValue = () => {

@@ -13,11 +13,12 @@ type MapSizeInputProps = {
     size: Vector2;
     editable: boolean;
     onSubmit: (value: Vector2) => void;
+    onCancel: () => void;
     onClick: () => void;
 };
 
 export const MapSizeInput: FunctionComponent<MapSizeInputProps> = (
-    { size, editable, onSubmit, onClick }
+    { size, editable, onSubmit, onClick, onCancel }
 ) => {
     const [value, setValue] = useState(size);
     const widthInputRef = useRef<HTMLInputElement>(null);
@@ -40,6 +41,7 @@ export const MapSizeInput: FunctionComponent<MapSizeInputProps> = (
 
     const resetValue = () => {
         setValue(size);
+        onCancel();
     };
 
     const submitValue = () => {

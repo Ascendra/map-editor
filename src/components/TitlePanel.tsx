@@ -33,10 +33,11 @@ export const TitlePanel: FunctionComponent = () => {
         setMapSizeEditable(false);
     };
 
-    const makeEditable =
+    const setEditable =
         (editableSetter: React.Dispatch<React.SetStateAction<boolean>>) =>
+        (editableStatus: boolean) =>
         () => {
-            editableSetter(true);
+            editableSetter(editableStatus);
         };
 
     return (
@@ -45,13 +46,15 @@ export const TitlePanel: FunctionComponent = () => {
                 name={name}
                 editable={mapNameEditable}
                 onSubmit={updateMapName}
-                onClick={makeEditable(setMapNameEditable)}
+                onClick={setEditable(setMapNameEditable)(true)}
+                onCancel={setEditable(setMapNameEditable)(false)}
             />
             <MapSizeInput
                 size={[width, height]}
                 editable={mapSizeEditable}
                 onSubmit={updateMapSize}
-                onClick={makeEditable(setMapSizeEditable)}
+                onClick={setEditable(setMapSizeEditable)(true)}
+                onCancel={setEditable(setMapSizeEditable)(false)}
             />
         </div>
     );
