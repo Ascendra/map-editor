@@ -18,6 +18,8 @@ import {
     SetMapItemLabel,
     SetMapItemPosition,
     SetMapItemSize,
+    SetMapName,
+    SetMapSize,
     SetMousePosition,
     SetPlatformSpawnCount
 } from "./MapEditorContextActions";
@@ -83,7 +85,10 @@ export const mapEditorContextReducer = (
         case DeleteEntity: {
             return {
                 ...state,
-                entityIds: state.entityIds.filter(id => id !== action.entityId)
+                entityIds: state.entityIds.filter(id => id !== action.entityId),
+                activeItemId: state.activeItemId === action.entityId
+                    ? null
+                    : state.activeItemId
             };
         }
         case DeletePlatform: {
@@ -91,7 +96,10 @@ export const mapEditorContextReducer = (
                 ...state,
                 platformIds: state.platformIds.filter(id =>
                     id !== action.platformId
-                )
+                ),
+                activeItemId: state.activeItemId === action.platformId
+                    ? null
+                    : state.activeItemId
             };
         }
         case SetEntityType: {
@@ -159,6 +167,19 @@ export const mapEditorContextReducer = (
                         height: action.newSize[1]
                     }
                 }
+            };
+        }
+        case SetMapName: {
+            return {
+                ...state,
+                name: action.newName
+            };
+        }
+        case SetMapSize: {
+            return {
+                ...state,
+                width: action.newSize[0],
+                height: action.newSize[1]
             };
         }
         case SetMousePosition: {
