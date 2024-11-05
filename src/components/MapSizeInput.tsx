@@ -61,7 +61,7 @@ export const MapSizeInput: FunctionComponent<MapSizeInputProps> = (
 
     if (editable) {
         return (
-            <div onKeyDown={submitOnEnter}>
+            <div className="title-input size" onKeyDown={submitOnEnter}>
                 <input
                     ref={widthInputRef}
                     value={value[0]}
@@ -73,5 +73,5 @@ export const MapSizeInput: FunctionComponent<MapSizeInputProps> = (
         );
     }
 
-    return <h3 onClick={onClick}>{size[0]} x {size[1]}</h3>;
+    return <h4 onClick={onClick} className="size">{size[0]} x {size[1]}</h4>;
 };

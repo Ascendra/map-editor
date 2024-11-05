@@ -1,4 +1,5 @@
 import { FunctionComponent, useMemo } from "react";
+import { constants } from "../../models/constants";
 import { Entity } from "../../models/Entity";
 import { EntityType } from "../../models/EntityType";
 import { MapItemCanvasHighlight } from "./MapItemCanvasHighlight";
@@ -15,14 +16,14 @@ export const EntityCanvasItem: FunctionComponent<EntityCanvasItemProps> = (
 ) => {
     const { x, y, width, height, type } = entity;
 
-    const color = useMemo(() => {
+    const [borderColor, fillColor] = useMemo(() => {
         switch (type) {
             case EntityType.PlayerSpawn:
-                return "#00FF00";
+                return ["#00FF00", "#00FF000D"];
             case EntityType.Portal:
-                return "#0000FF";
+                return ["#0000FF", "#0000FF0D"];
             default:
-                return "#000000";
+                return ["#000000", "#0000000D"];
         }
     }, [type]);
 
@@ -33,7 +34,8 @@ export const EntityCanvasItem: FunctionComponent<EntityCanvasItemProps> = (
                 y={y}
                 width={width}
                 height={height}
-                color={active ? "#FF0000" : color}
+                borderColor={active ? constants.HIGHLIGHT_COLOR : borderColor}
+                fillColor={active ? "#0000000D" : fillColor}
             />
             <MapItemCanvasHighlight
                 show={highlight}

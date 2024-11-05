@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, MouseEvent } from "react";
 import {
     useMapEditorContext,
     useMapEditorContextDispatch
@@ -19,7 +19,8 @@ export const PlatformsPanel: FunctionComponent = () => {
         });
     };
 
-    const deletePlatform = (platformId: string) => () => {
+    const deletePlatform = (platformId: string) => (event: MouseEvent) => {
+        event.stopPropagation();
         dispatch({
             type: DeletePlatform,
             platformId: platformId

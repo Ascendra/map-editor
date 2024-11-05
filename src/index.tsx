@@ -2,15 +2,15 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./components/App";
 
-const rootElement = document.querySelector("#root");
+const entryPointElement = document.querySelector("#react-entry-point");
 
-if (rootElement === null) {
+if (entryPointElement === null) {
     throw new Error(
-        "Could not find element with id: 'root' when creating React root"
+        "Could not find element with id: 'react-entry-point' when creating React root"
     );
 }
 
-const root = createRoot(rootElement);
+const root = createRoot(entryPointElement);
 
 root.render(
     <StrictMode>

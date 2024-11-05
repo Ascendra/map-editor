@@ -1,3 +1,14 @@
+:root {
+    --error-color: #E02323;
+    --text-color: #FFFFFF;
+    --sub-text-color: #CFCFCF;
+    --elevation-0-color: #505050;
+    --elevation-1-color: #454545;
+    --elevation-2-color: #333333;
+    --elevation-3-color: #222222;
+    --highlight-color: #20CFFF;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -12,6 +23,51 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
+
+
 button {
+    all: unset;
+    cursor: pointer;
+    background-color: var(--elevation-1-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+}
+
+button:hover {
+    background-color: var(--elevation-0-color);
+}
+
+button:active {
+    background-color: var(--elevation-3-color);
+}
+
+
+
+label {
+    color: var(--sub-text-color);
+    font-size: 0.75rem;
+    cursor: text;
+    width: fit-content;
+}
+
+input, select {
+    all: unset;
+    height: 1rem;
+    padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+    background-color: var(--elevation-3-color);
+    color: var(--text-color);
+    border-radius: 3px;
+    font-size: 1rem;
+}
+
+input:focus {
+    background-color: var(--text-color);
+    color: var(--elevation-3-color);
+}
+
+select {
     cursor: pointer;
 }

@@ -48,12 +48,12 @@ export const MapNameInput: FunctionComponent<MapNameInputProps> = (
 
     if (editable) {
         return (
-            <div onKeyDown={submitOnEnter}>
+            <div className="title-input" onKeyDown={submitOnEnter}>
                 <input ref={inputRef} value={value} onChange={updateValue} />
                 <InputControls onSubmit={submitValue} onCancel={resetValue} />
             </div>
         );
     }
 
-    return <h1 onClick={onClick}>{name}</h1>;
+    return <h2 onClick={onClick}>{name}</h2>;
 };

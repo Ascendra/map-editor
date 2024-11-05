@@ -23,8 +23,8 @@ export const MapItemCanvasHighlight: FunctionComponent<
             y={y - PADDING_SIZE}
             width={width + PADDING_SIZE * 2}
             height={height + PADDING_SIZE * 2}
-            lineDash={[2, 5]}
-            color="#FF0000"
+            lineDash={[2, 3]}
+            borderColor="#000000"
         />
     );
 };
