@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, MouseEvent } from "react";
 import {
     useMapEditorContext,
     useMapEditorContextDispatch
@@ -8,7 +8,7 @@ import { CSX } from "../utilities/CSX";
 
 type ListItemProps = {
     itemId: string;
-    onDelete: () => void;
+    onDelete: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const ListItem: FunctionComponent<ListItemProps> = (

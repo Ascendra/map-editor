@@ -5,7 +5,7 @@ import {
 } from "../MapEditorContext";
 import { SetGrabbedMapItemId } from "../MapEditorContext/MapEditorContextActions";
 
-export const useDocumentMapItemDropCapture = () => {
+export const useMapItemDropListener = () => {
     const { grabbedItemId } = useMapEditorContext();
     const dispatch = useMapEditorContextDispatch();
 

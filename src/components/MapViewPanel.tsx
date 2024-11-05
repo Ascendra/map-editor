@@ -1,10 +1,10 @@
 import {
     FunctionComponent,
     MouseEvent as ReactMouseEvent,
+    useEffect,
     useRef
 } from "react";
 import { useHighlightedItemDetector } from "../hooks/useHighlightedItemDetector";
-import { useMapEditorMousePositionRecorder } from "../hooks/useMapEditorMousePositionRecorder";
 import {
     useMapEditorContext,
     useMapEditorContextDispatch
@@ -12,6 +12,7 @@ import {
 import {
     SetActiveItemId,
     SetGrabbedMapItemId,
+    SetMapCanvasRef,
     SetMapItemPosition
 } from "../MapEditorContext/MapEditorContextActions";
 import { Nullable } from "../models/Nullable";
@@ -22,7 +23,6 @@ import { isPlatform } from "../utilities/isPlatform";
 import { Canvas } from "./Canvas/Canvas";
 import { EntityCanvasItem } from "./Canvas/EntityCanvasItem";
 import { PlatformCanvasItem } from "./Canvas/PlatformCanvasItem";
-import { MousePositionOverlay } from "./MousePositionOverlay";
 
 export const MapViewPanel: FunctionComponent = () => {
     const {
@@ -32,14 +32,21 @@ export const MapViewPanel: FunctionComponent = () => {
         entityIds,
         grabbedItemId,
         mapItems,
-        activeItemId
+        activeItemId,
+        mousePosition,
+        initialDragPoint
     } = useMapEditorContext();
     const dispatch = useMapEditorContextDispatch();
     const canvasRef = useRef<Nullable<HTMLCanvasElement>>(null);
 
-    useMapEditorMousePositionRecorder(canvasRef, [width, height]);
-
     const highlightedItemId = useHighlightedItemDetector();
+
+    useEffect(() => {
+        dispatch({
+            type: SetMapCanvasRef,
+            newRef: canvasRef.current
+        });
+    }, [canvasRef]);
 
     const pickUpMapItem = () => {
         if (highlightedItemId !== null) {
@@ -58,14 +65,17 @@ export const MapViewPanel: FunctionComponent = () => {
     const dragMapItem = (
         event: ReactMouseEvent<HTMLDivElement, MouseEvent>
     ) => {
-        if (grabbedItemId !== null) {
-            const { movementX, movementY } = event;
-            const { x, y } = mapItems[grabbedItemId];
+        if (grabbedItemId !== null && initialDragPoint !== null) {
+            const movementX = mousePosition[0] - initialDragPoint.mouse[0];
+            const movementY = mousePosition[1] - initialDragPoint.mouse[1];
 
             dispatch({
                 type: SetMapItemPosition,
                 itemId: grabbedItemId,
-                newPosition: [x + movementX, y + movementY]
+                newPosition: [
+                    initialDragPoint.item[0] + movementX,
+                    initialDragPoint.item[1] + movementY
+                ]
             });
         }
     };
@@ -89,32 +99,30 @@ export const MapViewPanel: FunctionComponent = () => {
             onMouseMove={dragMapItem}
             onClick={clearActiveItem}
         >
-            <MousePositionOverlay>
-                <Canvas height={height} width={width} ref={canvasRef}>
-                    {platformIds.map((id) => {
-                        asserts(isPlatform(mapItems[id]));
-                        return (
-                            <PlatformCanvasItem
-                                key={id}
-                                platform={mapItems[id]}
-                                highlight={highlightedItemId === id}
-                                active={activeItemId === id}
-                            />
-                        );
-                    })}
-                    {entityIds.map((id) => {
-                        asserts(isEntity(mapItems[id]));
-                        return (
-                            <EntityCanvasItem
-                                key={id}
-                                entity={mapItems[id]}
-                                highlight={highlightedItemId === id}
-                                active={activeItemId === id}
-                            />
-                        );
-                    })}
-                </Canvas>
-            </MousePositionOverlay>
+            <Canvas height={height} width={width} ref={canvasRef}>
+                {platformIds.map((id) => {
+                    asserts(isPlatform(mapItems[id]));
+                    return (
+                        <PlatformCanvasItem
+                            key={id}
+                            platform={mapItems[id]}
+                            highlight={highlightedItemId === id}
+                            active={activeItemId === id}
+                        />
+                    );
+                })}
+                {entityIds.map((id) => {
+                    asserts(isEntity(mapItems[id]));
+                    return (
+                        <EntityCanvasItem
+                            key={id}
+                            entity={mapItems[id]}
+                            highlight={highlightedItemId === id}
+                            active={activeItemId === id}
+                        />
+                    );
+                })}
+            </Canvas>
         </div>
     );
 };

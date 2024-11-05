@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, MouseEvent } from "react";
 import {
     useMapEditorContext,
     useMapEditorContextDispatch
@@ -19,7 +19,8 @@ export const EntitiesPanel: FunctionComponent = () => {
         });
     };
 
-    const deleteEntity = (entityId: string) => () => {
+    const deleteEntity = (entityId: string) => (event: MouseEvent) => {
+        event.stopPropagation();
         dispatch({
             type: DeleteEntity,
             entityId: entityId

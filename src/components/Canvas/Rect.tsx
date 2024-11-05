@@ -7,21 +7,32 @@ export type RectProps = {
     width: number;
     height: number;
     lineDash?: number[];
-    color?: string;
+    borderColor?: string;
+    fillColor?: string;
 };
 
 export const Rect: FunctionComponent<RectProps> = (
-    { x, y, width, height, lineDash = [], color = "#000000" }
+    {
+        x,
+        y,
+        width,
+        height,
+        lineDash = [],
+        borderColor = "#000000",
+        fillColor = "rgba(0, 0, 0, 0)"
+    }
 ) => {
     const context = useContext2d();
 
     if (context !== null) {
         context.beginPath();
         context.rect(x, y, width, height);
-        context.strokeStyle = color;
+        context.strokeStyle = borderColor;
         context.setLineDash(lineDash);
         context.lineWidth = 1;
         context.stroke();
+        context.fillStyle = fillColor;
+        context.fill();
     }
 
     return null;

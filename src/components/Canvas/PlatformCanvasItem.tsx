@@ -1,4 +1,5 @@
 import { FunctionComponent } from "react";
+import { constants } from "../../models/constants";
 import { Platform } from "../../models/Platform";
 import { MapItemCanvasHighlight } from "./MapItemCanvasHighlight";
 import { Rect } from "./Rect";
@@ -21,7 +22,7 @@ export const PlatformCanvasItem: FunctionComponent<PlatformCanvasItemProps> = (
                 y={y}
                 width={width}
                 height={height}
-                color={active ? "#FF0000" : "#000000"}
+                borderColor={active ? constants.HIGHLIGHT_COLOR : "#000000"}
             />
             <MapItemCanvasHighlight
                 show={highlight}

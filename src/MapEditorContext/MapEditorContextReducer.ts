@@ -5,21 +5,23 @@ import { EntitySizes } from "../models/EntitySizes";
 import { EntityType } from "../models/EntityType";
 import { MapItemType } from "../models/MapItemType";
 import { Platform } from "../models/Platform";
-import { randomInt } from "../utilities/randomInt";
 import {
     AddEntity,
     AddPlatform,
     DeleteEntity,
     DeletePlatform,
+    ImportMap,
     MapEditorContextActions,
     SetActiveItemId,
     SetEntityType,
     SetGrabbedMapItemId,
+    SetMapCanvasRef,
     SetMapItemLabel,
     SetMapItemPosition,
     SetMapItemSize,
     SetMapName,
     SetMapSize,
+    SetMouseOverCanvas,
     SetMousePosition,
     SetPlatformSpawnCount
 } from "./MapEditorContextActions";
@@ -34,8 +36,8 @@ export const mapEditorContextReducer = (
             const newId = uuid.v4();
             const [width, height] = EntitySizes[EntityType.Portal];
             const newEntity: Entity = {
-                x: randomInt(50, state.width - width),
-                y: randomInt(50, state.height - height),
+                x: constants.PADDING_SIZE,
+                y: constants.PADDING_SIZE,
                 width,
                 height,
                 type: EntityType.Portal,
@@ -57,12 +59,11 @@ export const mapEditorContextReducer = (
             };
         }
         case AddPlatform: {
-            const length = randomInt(10, 50);
             const newId = uuid.v4();
             const newPlatform: Platform = {
-                x: randomInt(50, state.width - 100),
-                y: randomInt(50, state.height - 100),
-                width: length * constants.GRID_SIZE,
+                x: constants.PADDING_SIZE,
+                y: constants.PADDING_SIZE,
+                width: 50 * constants.GRID_SIZE,
                 height: 0,
                 spawnPointCount: 0,
                 id: newId,
@@ -83,15 +84,22 @@ export const mapEditorContextReducer = (
             };
         }
         case DeleteEntity: {
+            const newMapItems = { ...state.mapItems };
+            delete newMapItems[action.entityId];
+
             return {
                 ...state,
                 entityIds: state.entityIds.filter(id => id !== action.entityId),
                 activeItemId: state.activeItemId === action.entityId
                     ? null
-                    : state.activeItemId
+                    : state.activeItemId,
+                mapItems: newMapItems
             };
         }
         case DeletePlatform: {
+            const newMapItems = { ...state.mapItems };
+            delete newMapItems[action.platformId];
+
             return {
                 ...state,
                 platformIds: state.platformIds.filter(id =>
@@ -99,7 +107,17 @@ export const mapEditorContextReducer = (
                 ),
                 activeItemId: state.activeItemId === action.platformId
                     ? null
-                    : state.activeItemId
+                    : state.activeItemId,
+                mapItems: newMapItems
+            };
+        }
+        case ImportMap: {
+            return {
+                ...state,
+                name: action.newMap.name,
+                width: action.newMap.size[0],
+                height: action.newMap.size[1],
+                mapItems: action.newMap.mapItems
             };
         }
         case SetEntityType: {
@@ -125,9 +143,27 @@ export const mapEditorContextReducer = (
             };
         }
         case SetGrabbedMapItemId: {
+            if (action.newItemId === null) {
+                return {
+                    ...state,
+                    grabbedItemId: action.newItemId,
+                    initialDragPoint: null
+                };
+            }
+            const grabbedItem = state.mapItems[action.newItemId];
             return {
                 ...state,
-                grabbedItemId: action.newItemId
+                grabbedItemId: action.newItemId,
+                initialDragPoint: {
+                    mouse: [...state.mousePosition],
+                    item: [grabbedItem.x, grabbedItem.y]
+                }
+            };
+        }
+        case SetMapCanvasRef: {
+            return {
+                ...state,
+                mapCanvasRef: action.newRef
             };
         }
         case SetMapItemLabel: {
@@ -186,6 +222,12 @@ export const mapEditorContextReducer = (
             return {
                 ...state,
                 mousePosition: action.newPosition
+            };
+        }
+        case SetMouseOverCanvas: {
+            return {
+                ...state,
+                mouseOverCanvas: action.mouseOver
             };
         }
         case SetPlatformSpawnCount: {
